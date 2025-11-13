@@ -1,0 +1,420 @@
+:root {
+  --bg: #fff;
+  --ink: #222;
+  --muted: #666;
+  --brand: #1e7e34;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.nav {
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 12px 24px;
+}
+.brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ink);
+}
+.links {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+.links a,
+.auth a {
+  text-decoration: none;
+  color: var(--ink);
+}
+.btn {
+  background: var(--brand);
+  color: #fff;
+  border: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn-secondary {
+  background: #e9ecef;
+  border: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+.page h1 {
+  margin-bottom: 8px;
+}
+.muted {
+  color: var(--muted);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.pet-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.pet-card:hover {
+  transform: translateY(-2px);
+}
+.pet-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+.pet-body {
+  padding: 12px;
+}
+.chips .chip {
+  display: inline-block;
+  font-size: 12px;
+  background: #f3f5f7;
+  padding: 4px 8px;
+  border-radius: 999px;
+  margin-right: 6px;
+}
+.form {
+  max-width: 720px;
+  display: grid;
+  gap: 12px;
+}
+.form label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+.form input,
+.form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+.form .two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  max-width: 840px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+.modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal-content {
+  padding: 16px;
+}
+.footer {
+  border-top: 1px solid #eee;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+}
+@media (max-width: 800px) {
+  .nav-inner {
+    flex-wrap: wrap;
+  }
+  .modal {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === HERO (main page part 1) === */
+.hero {
+  position: relative;
+  min-height: 60vh;
+  background-image: url("https://images.pexels.com/photos/3299901/pexels-photo-3299901.jpeg");
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7));
+}
+
+.hero-overlay {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-copy h1 {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.hero-copy p {
+  max-width: 520px;
+  font-size: 16px;
+}
+
+.hero-bottom-row {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.hero-box {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 16px 18px;
+}
+
+.hero-box h2 {
+  margin: 0 0 6px;
+}
+
+.hero-box p {
+  margin: 0 0 12px;
+}
+
+.hero-box-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* === MAIN PAGE PART 2 – cards and adoption strip === */
+.home-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.home-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  padding: 16px 18px;
+}
+
+.home-card h3 {
+  margin-top: 0;
+}
+
+.home-card-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--brand);
+}
+
+/* adoption preview row */
+.adoption-preview {
+  margin: 40px auto 48px;
+}
+
+.adoption-preview__header {
+  margin-bottom: 16px;
+}
+
+.adoption-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.adoption-preview__card {
+  border-radius: 16px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  background: #fff;
+}
+
+.adoption-preview__card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.adoption-preview__card-body {
+  padding: 10px 12px;
+}
+
+.adoption-preview__more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px dashed #ccc;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--ink);
+  background: #fafafa;
+}
+
+/* === ADOPTION PAGE === */
+.adopt-page {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.adopt-header {
+  margin-bottom: 16px;
+}
+
+.adopt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.adopt-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  cursor: pointer;
+  padding: 0;
+  background: #000;
+}
+
+.adopt-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.adopt-card__details {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.adopt-card:hover .adopt-card__details {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* first card: show details from the start like your sketch */
+.adopt-card--featured .adopt-card__details {
+  position: static;
+  transform: none;
+  opacity: 1;
+  background: #fff;
+  color: var(--ink);
+}
+
+/* remove default button styling */
+.adopt-card {
+  border: none;
+}
+
+/* === AUTH PAGE – login + register side by side === */
+.auth-page {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.auth-panel {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  padding: 18px 20px;
+}
+
+.auth-title {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+/* forms inside panels take full width */
+.auth-panel .form {
+  max-width: 100%;
+}
+
+/* responsive tweaks */
+@media (max-width: 768px) {
+  .hero-overlay {
+    padding: 32px 16px 24px;
+  }
+}
+.input-field {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.input-field span {
+  font-weight: 500;
+}
+
+.input-field input,
+.input-field select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font: inherit;
+}

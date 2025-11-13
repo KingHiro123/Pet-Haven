@@ -1,0 +1,22 @@
+[
+  {
+    "id": "p1",
+    "name": "Mocha",
+    "breed": "Singapore Special",
+    "age": 2,
+    "color": "Brown",
+    "vaccinated": true,
+    "hdbTrained": true,
+    "photo": "https://placekitten.com/400/260"
+  },
+  {
+    "id": "p2",
+    "name": "Snow",
+    "breed": "Samoyed",
+    "age": 3,
+    "color": "White",
+    "vaccinated": true,
+    "hdbTrained": false,
+    "photo": "https://placekitten.com/401/260"
+  }
+]
