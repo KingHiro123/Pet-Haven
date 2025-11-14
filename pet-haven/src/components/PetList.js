@@ -1,3 +1,4 @@
+// src/components/PetList.js
 import React, { useState } from "react";
 import PetCard from "./PetCard";
 import PetDetailsModal from "./PetDetailsModal";
@@ -7,7 +8,7 @@ export default function PetList({ pets }) {
 
   return (
     <>
-      <section className="grid">
+      <section className="adopt-grid">
         {pets.map((p) => (
           <PetCard key={p.id} pet={p} onOpen={setSelected} />
         ))}

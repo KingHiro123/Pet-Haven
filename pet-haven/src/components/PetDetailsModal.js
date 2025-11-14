@@ -12,8 +12,8 @@ export default function PetDetailsModal({ pet, onClose }) {
           <h2>{pet.name}</h2>
           <ul className="facts">
             <li>Breed: {pet.breed}</li>
-            <li>Age: {pet.age}</li>
-            <li>Color: {pet.color}</li>
+            {/* <li>Age: {pet.age}</li>
+            <li>Color: {pet.color}</li> */}
             <li>Vaccinated: {pet.vaccinated ? "Yes" : "No"}</li>
             <li>HDB trained: {pet.hdbTrained ? "Yes" : "No"}</li>
           </ul>

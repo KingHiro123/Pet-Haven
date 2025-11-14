@@ -1,49 +1,70 @@
 // src/pages/Adopt.js
-import React, { useState } from "react";
-import pets from "../data/pets.json";
-import PetDetailsModal from "../components/PetDetailsModal";
+import React from "react";
+import { pets } from "../data/pets";
+import PetList from "../components/PetList";
 
 export default function Adopt() {
-  const [selected, setSelected] = useState(null);
-
   return (
     <section className="page adopt-page">
       <header className="adopt-header">
         <h1>Adoption</h1>
         <p className="muted">
-          Browse our current cats and dogs. Hover to see quick info, and click
-          for full details.
+          Browse dogs available for adoption. Click a card for more information.
         </p>
       </header>
 
-      <div className="adopt-grid">
-        {pets.map((pet, index) => (
-          <button
-            key={pet.id}
-            type="button"
-            className={
-              index === 0 ? "adopt-card adopt-card--featured" : "adopt-card"
-            }
-            onClick={() => setSelected(pet)}
-          >
-            <img src={pet.photo} alt={pet.name} />
-            <div className="adopt-card__details">
-              <h3>{pet.name}</h3>
-              <p>
-                {pet.breed} • {pet.age} yrs
-              </p>
-              <p className="muted">
-                {pet.vaccinated ? "Vaccinated" : "Not vaccinated"}{" "}
-                {pet.hdbTrained ? "• HDB trained" : ""}
-              </p>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {selected && (
-        <PetDetailsModal pet={selected} onClose={() => setSelected(null)} />
-      )}
+      <PetList pets={pets} />
     </section>
   );
 }
+
+// import React, { useState, useEffect } from "react";
+// import PetList from "../components/PetList";
+
+// const CAT_URL = "https://api.thecatapi.com/v1/images/search?limit=15";
+// const DOG_URL = "https://api.thedogapi.com/v1/images/search?limit=15";
+
+// export default function Adopt() {
+//   const [pets, setPets] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     async function load() {
+//       const [catRes, dogRes] = await Promise.all([
+//         fetch(CAT_URL),
+//         fetch(DOG_URL),
+//       ]);
+//       const [catData, dogData] = await Promise.all([
+//         catRes.json(),
+//         dogRes.json(),
+//       ]);
+
+//       const cats = catData.map((item, i) => ({
+//         id: `cat-${item.id || i}`,
+//         species: "Cat",
+//         breed: item.breeds?.[0]?.name || "Mixed breed",
+//         photo: item.url,
+//       }));
+
+//       const dogs = dogData.map((item, i) => ({
+//         id: `dog-${item.id || i}`,
+//         species: "Dog",
+//         breed: item.breeds?.[0]?.name || "Mixed breed",
+//         photo: item.url,
+//       }));
+
+//       setPets([...cats, ...dogs]);
+//       setLoading(false);
+//     }
+
+//     load();
+//   }, []);
+
+//   return (
+//     <section className="page adopt-page">
+//       <h1>Adoption</h1>
+//       {loading && <p className="muted">Loading pets…</p>}
+//       <PetList pets={pets} />
+//     </section>
+//   );
+// }
