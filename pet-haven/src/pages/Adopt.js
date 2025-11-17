@@ -1,19 +1,63 @@
 // src/pages/Adopt.js
-import React from "react";
+import React, { useState } from "react";
 import { pets } from "../data/pets";
 import PetList from "../components/PetList";
+import PetFilters from "../components/PetFilters";
 
 export default function Adopt() {
+  const [speciesFilter, setSpeciesFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [ageFilter, setAgeFilter] = useState("all");
+  const [breedFilter, setBreedFilter] = useState("all"); // 🔽 THIS PART IS NEW: actually apply the filters
+  const filteredPets = pets.filter((pet) => {
+    // species
+    const speciesOk = speciesFilter === "all" || pet.species === speciesFilter;
+
+    // status (Adoptable / Foster only)
+    const statusOk =
+      statusFilter === "all" ||
+      (statusFilter === "adoptable"
+        ? pet.status?.toLowerCase().includes("adopt")
+        : pet.status?.toLowerCase().includes("foster"));
+
+    // age ranges: "1-2", "3-5", "6-8", "9-11"
+    const ageOk =
+      ageFilter === "all" ||
+      (() => {
+        const [min, max] = ageFilter.split("-").map(Number);
+        return pet.age >= min && pet.age <= max;
+      })();
+
+    // breed
+    const breedOk = breedFilter === "all" || pet.breed === breedFilter;
+
+    return speciesOk && statusOk && ageOk && breedOk;
+  });
   return (
     <section className="page adopt-page">
       <header className="adopt-header">
-        <h1>Adoption</h1>
-        <p className="muted">
-          Browse dogs available for adoption. Click a card for more information.
-        </p>
+        <div className="adopt-header-main">
+          <div>
+            <h1>Adoption</h1>
+            <p className="muted">
+              Browse animals available for adoption or fostering.
+            </p>
+          </div>
+
+          <PetFilters
+            speciesFilter={speciesFilter}
+            setSpeciesFilter={setSpeciesFilter}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            ageFilter={ageFilter}
+            setAgeFilter={setAgeFilter}
+            breedFilter={breedFilter}
+            setBreedFilter={setBreedFilter}
+          />
+        </div>
       </header>
 
-      <PetList pets={pets} />
+      <PetList pets={filteredPets} />
     </section>
   );
 }

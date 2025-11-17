@@ -11,6 +11,7 @@ import HelpUs from "./pages/HelpUs";
 import Donate from "./pages/Donate";
 import Auth from "./pages/Auth";
 import AdoptApply from "./pages/AdoptApply";
+import Gallery from "./pages/Gallery";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/login" element={<Auth mode="login" />} />
           <Route path="/register" element={<Auth mode="register" />} />
           <Route path="/adopt/:id/apply" element={<AdoptApply />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </main>
       <Footer />

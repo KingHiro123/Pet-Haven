@@ -1,29 +1,36 @@
 // src/components/PetCard.js
-import React, { useMemo } from "react";
-import { getNameById } from "./PetDataGenerator"; // or your name generator
+import React from "react";
 
-export default function PetCard({ pet, onOpen }) {
-  // Stable name (no random)
-  const displayName = useMemo(() => getNameById(pet.id), [pet.id]);
-
-  const displayPet = { ...pet, name: displayName };
+export default function PetCard({ pet, onOpen, disableClick }) {
+  const statusLabel = pet.status || "Adoptable";
+  const isAdoptable = statusLabel.toLowerCase().includes("adopt");
 
   return (
     <button
       className="adopt-card"
       type="button"
-      onClick={() => onOpen(displayPet)}
+      onClick={() => {
+        if (!disableClick && onOpen) onOpen(pet);
+      }}
+      style={{ cursor: disableClick ? "default" : "pointer" }}
     >
-      <img src={displayPet.photo} alt={displayPet.breed} />
-
+      <img src={pet.photo} alt={pet.breed} />
       <div className="adopt-card__details">
-        <h3>{displayName}</h3>
-        <p>{displayPet.breed}</p>
+        <h3>{pet.name}</h3>
+        <p>{pet.breed}</p>
+        {pet.age && <p>Age: {pet.age} years</p>}
 
-        <p className="muted">
-          {displayPet.vaccinated ? "Vaccinated" : "Not vaccinated"}{" "}
-          {displayPet.hdbTrained ? "• HDB trained" : ""}
-        </p>
+        <div className="status-row">
+          <span
+            className={
+              isAdoptable
+                ? "status-tag status-tag--adopt"
+                : "status-tag status-tag--foster"
+            }
+          >
+            {statusLabel}
+          </span>
+        </div>
       </div>
     </button>
   );

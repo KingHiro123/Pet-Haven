@@ -6,14 +6,14 @@ export default function Navbar() {
     <header className="nav">
       <nav className="nav-inner">
         <NavLink to="/" className="brand">
-          Pet Haven
+          Pet Heaven
         </NavLink>
         <ul className="links">
           <li>
             <NavLink to="/about">About</NavLink>
           </li>
           <li>
-            <NavLink to="/facilities">Facilities</NavLink>
+            <NavLink to="/gallery">Gallery</NavLink>
           </li>
           <li>
             <NavLink to="/adopt">Adopt</NavLink>
