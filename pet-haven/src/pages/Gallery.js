@@ -1,8 +1,8 @@
 // src/pages/Gallery.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PetList from "../components/PetList";
-import { getNameById } from "../components/PetDataGenerator";
 import PetFilters from "../components/PetFilters";
+import { getNameById } from "../components/PetDataGenerator";
 
 const CAT_URL =
   "https://api.thecatapi.com/v1/images/search?limit=12&has_breeds=1";
@@ -12,36 +12,15 @@ const DOG_URL =
 export default function Gallery() {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [speciesFilter, setSpeciesFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
   const [ageFilter, setAgeFilter] = useState("all");
+
+  // we still keep these just to satisfy PetFilters props,
+  // but we won't use them in filtering
+  const [statusFilter, setStatusFilter] = useState("all");
   const [breedFilter, setBreedFilter] = useState("all");
 
-  // 🔽 THIS PART IS NEW: actually apply the filters
-  const filteredPets = pets.filter((pet) => {
-    // species
-    const speciesOk = speciesFilter === "all" || pet.species === speciesFilter;
-
-    // status (Adoptable / Foster only)
-    const statusOk =
-      statusFilter === "all" ||
-      (statusFilter === "adoptable"
-        ? pet.status?.toLowerCase().includes("adopt")
-        : pet.status?.toLowerCase().includes("foster"));
-
-    // age ranges: "1-2", "3-5", "6-8", "9-11"
-    const ageOk =
-      ageFilter === "all" ||
-      (() => {
-        const [min, max] = ageFilter.split("-").map(Number);
-        return pet.age >= min && pet.age <= max;
-      })();
-
-    // breed
-    const breedOk = breedFilter === "all" || pet.breed === breedFilter;
-
-    return speciesOk && statusOk && ageOk && breedOk;
-  });
   useEffect(() => {
     async function load() {
       try {
@@ -65,7 +44,6 @@ export default function Gallery() {
             breed: breedInfo?.name || "Domestic Cat",
             photo: item.url,
             age: Math.floor(Math.random() * 10) + 1,
-            status: Math.random() > 0.4 ? "Adoptable" : "Foster only",
           };
         });
 
@@ -79,11 +57,12 @@ export default function Gallery() {
             breed: breedInfo?.name || "Mixed Breed Dog",
             photo: item.url,
             age: Math.floor(Math.random() * 10) + 1,
-            status: Math.random() > 0.4 ? "Adoptable" : "Foster only",
           };
         });
 
         setPets([...cats, ...dogs]);
+      } catch (e) {
+        console.error("Error loading gallery pets", e);
       } finally {
         setLoading(false);
       }
@@ -92,6 +71,23 @@ export default function Gallery() {
     load();
   }, []);
 
+  const filteredPets = useMemo(() => {
+    return pets.filter((pet) => {
+      const speciesOk =
+        speciesFilter === "all" || pet.species === speciesFilter;
+
+      const ageOk =
+        ageFilter === "all" ||
+        (() => {
+          const [min, max] = ageFilter.split("-").map(Number);
+          return pet.age >= min && pet.age <= max;
+        })();
+
+      // no status / breed filtering on Gallery
+      return speciesOk && ageOk;
+    });
+  }, [pets, speciesFilter, ageFilter]);
+
   return (
     <section className="page adopt-page">
       <header className="adopt-header">
@@ -99,8 +95,8 @@ export default function Gallery() {
           <div>
             <h1>Gallery</h1>
             <p className="muted">
-              View a gallery of animals from online sources. Hover for basic
-              info.
+              View a gallery of animals from online sources. Hover to see their
+              names and ages.
             </p>
           </div>
 
@@ -113,14 +109,20 @@ export default function Gallery() {
             setAgeFilter={setAgeFilter}
             breedFilter={breedFilter}
             setBreedFilter={setBreedFilter}
+            showStatus={false} // 🔹 hide Status dropdown
+            showBreed={false} // 🔹 hide Breed dropdown
           />
         </div>
       </header>
 
       {loading && <p className="muted">Loading gallery pets…</p>}
 
-      {/* ✅ disableClick → no modal, no click interaction */}
-      <PetList pets={filteredPets} disableClick={true} />
+      <PetList
+        pets={filteredPets}
+        disableClick={true} // no modal
+        showBreed={false} // 🔹 hide breed on hover
+        showStatus={false} // 🔹 hide status tag on hover
+      />
     </section>
   );
 }

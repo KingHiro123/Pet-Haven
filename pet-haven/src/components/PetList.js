@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import PetCard from "./PetCard";
 import PetDetailsModal from "./PetDetailsModal";
 
-export default function PetList({ pets, disableClick = false }) {
+export default function PetList({
+  pets,
+  disableClick = false,
+  showBreed = true,
+  showStatus = true,
+}) {
   const [selected, setSelected] = useState(null);
 
   return (
@@ -15,11 +20,12 @@ export default function PetList({ pets, disableClick = false }) {
             pet={p}
             onOpen={disableClick ? null : setSelected}
             disableClick={disableClick}
+            showBreed={showBreed}
+            showStatus={showStatus}
           />
         ))}
       </section>
 
-      {/* ✅ Modal ONLY when clicks are enabled (Adopt page) */}
       {!disableClick && selected && (
         <PetDetailsModal pet={selected} onClose={() => setSelected(null)} />
       )}

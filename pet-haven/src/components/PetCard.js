@@ -1,7 +1,13 @@
 // src/components/PetCard.js
 import React from "react";
 
-export default function PetCard({ pet, onOpen, disableClick }) {
+export default function PetCard({
+  pet,
+  onOpen,
+  disableClick,
+  showBreed = true,
+  showStatus = true,
+}) {
   const statusLabel = pet.status || "Adoptable";
   const isAdoptable = statusLabel.toLowerCase().includes("adopt");
 
@@ -14,23 +20,31 @@ export default function PetCard({ pet, onOpen, disableClick }) {
       }}
       style={{ cursor: disableClick ? "default" : "pointer" }}
     >
-      <img src={pet.photo} alt={pet.breed} />
-      <div className="adopt-card__details">
+      <img src={pet.photo} alt={pet.breed || pet.name} />
+
+      <div className="adopt-overlay">
         <h3>{pet.name}</h3>
-        <p>{pet.breed}</p>
+
+        {/* Breed: only for pages that want it */}
+        {showBreed && <p>{pet.breed}</p>}
+
+        {/* Age: everyone sees this */}
         {pet.age && <p>Age: {pet.age} years</p>}
 
-        <div className="status-row">
-          <span
-            className={
-              isAdoptable
-                ? "status-tag status-tag--adopt"
-                : "status-tag status-tag--foster"
-            }
-          >
-            {statusLabel}
-          </span>
-        </div>
+        {/* Status pill: only for pages that want it */}
+        {showStatus && (
+          <div className="status-row">
+            <span
+              className={
+                isAdoptable
+                  ? "status-tag status-tag--adopt"
+                  : "status-tag status-tag--foster"
+              }
+            >
+              {statusLabel}
+            </span>
+          </div>
+        )}
       </div>
     </button>
   );

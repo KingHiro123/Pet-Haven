@@ -10,6 +10,8 @@ export default function PetFilters({
   setAgeFilter,
   breedFilter,
   setBreedFilter,
+  showStatus = true,
+  showBreed = true,
 }) {
   return (
     <div className="filter-controls">
@@ -26,20 +28,22 @@ export default function PetFilters({
         </select>
       </label>
 
-      {/* Status */}
-      <label>
-        <span>Status</span>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="adoptable">Adoptable</option>
-          <option value="foster">Foster only</option>
-        </select>
-      </label>
+      {/* Status – hidden on Gallery when showStatus=false */}
+      {showStatus && (
+        <label>
+          <span>Status</span>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="adoptable">Adoptable</option>
+            <option value="foster">Foster only</option>
+          </select>
+        </label>
+      )}
 
-      {/* Age */}
+      {/* Age (with ranges) */}
       <label>
         <span>Age</span>
         <select
@@ -54,36 +58,38 @@ export default function PetFilters({
         </select>
       </label>
 
-      {/* Breed */}
-      <label>
-        <span>Breed</span>
-        <select
-          value={breedFilter}
-          onChange={(e) => setBreedFilter(e.target.value)}
-        >
-          <option value="all">All</option>
+      {/* Breed – hidden on Gallery when showBreed=false */}
+      {showBreed && (
+        <label>
+          <span>Breed</span>
+          <select
+            value={breedFilter}
+            onChange={(e) => setBreedFilter(e.target.value)}
+          >
+            <option value="all">All</option>
 
-          {/* Dogs */}
-          <option value="Golden Retriever">Golden Retriever</option>
-          <option value="Pomeranian">Pomeranian</option>
-          <option value="Beagle">Beagle</option>
-          <option value="Samoyed">Samoyed</option>
-          <option value="Shiba Inu">Shiba Inu</option>
-          <option value="Corgi">Corgi</option>
-          <option value="French Bulldog">French Bulldog</option>
-          <option value="German Shepherd">German Shepherd</option>
+            {/* Dogs */}
+            <option value="Golden Retriever">Golden Retriever</option>
+            <option value="Pomeranian">Pomeranian</option>
+            <option value="Beagle">Beagle</option>
+            <option value="Samoyed">Samoyed</option>
+            <option value="Shiba Inu">Shiba Inu</option>
+            <option value="Corgi">Corgi</option>
+            <option value="French Bulldog">French Bulldog</option>
+            <option value="German Shepherd">German Shepherd</option>
 
-          {/* Cats */}
-          <option value="Domestic Shorthair">Domestic Shorthair</option>
-          <option value="White Shorthair">White Shorthair</option>
-          <option value="Grey Tabby">Grey Tabby</option>
-          <option value="Calico">Calico</option>
-          <option value="Black Cat">Black Cat</option>
-          <option value="Tabby Kitten">Tabby Kitten</option>
-          <option value="British Shorthair">British Shorthair</option>
-          <option value="White Longhair">White Longhair</option>
-        </select>
-      </label>
+            {/* Cats */}
+            <option value="Domestic Shorthair">Domestic Shorthair</option>
+            <option value="White Shorthair">White Shorthair</option>
+            <option value="Grey Tabby">Grey Tabby</option>
+            <option value="Calico">Calico</option>
+            <option value="Black Cat">Black Cat</option>
+            <option value="Tabby Kitten">Tabby Kitten</option>
+            <option value="British Shorthair">British Shorthair</option>
+            <option value="White Longhair">White Longhair</option>
+          </select>
+        </label>
+      )}
     </div>
   );
 }

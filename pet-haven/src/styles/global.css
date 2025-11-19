@@ -3,6 +3,7 @@
   --ink: #222;
   --muted: #666;
   --brand: #1e7e34;
+  --nav-h: 64px; /* make sure this exists somewhere */
 }
 * {
   box-sizing: border-box;
@@ -12,11 +13,12 @@ body {
   font-family: system-ui, Arial, sans-serif;
   color: var(--ink);
   background: var(--bg);
+  overflow-x: hidden; /* prevent sideways scroll from 100vw trick */
 }
 .container {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 24px;
+  /* padding: 24px; */
 }
 .nav {
   border-bottom: 1px solid #eee;
@@ -25,11 +27,22 @@ body {
 .nav-inner {
   display: flex;
   align-items: center;
+  gap: 16px;
+  /* max-width: 1120px; */
+  margin: 0 auto;
+  padding: 30px 24px;
+  /* flex-direction: row; */
+  font-size: 1.1rem;
+  justify-content: space-between;
+
+  /* Old css */
+  /* display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 12px 24px;
+  padding: 12px 24px; */
 }
 .brand {
   font-weight: 700;
@@ -48,6 +61,101 @@ body {
   text-decoration: none;
   color: var(--ink);
 }
+/* === NAVBAR LINKS + DROPDOWNS === */
+
+/* Highlight current page */
+.links a.active {
+  font-weight: 600;
+  color: var(--brand);
+}
+
+/* Items that own a dropdown */
+.nav-item {
+  position: relative;
+}
+
+/* Normal nav links + the dropdown trigger button share styling */
+.nav-link,
+.nav-link-button {
+  position: relative;
+  padding-bottom: 4px;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+/* Underline for active page */
+.nav-link.active,
+.nav-link-button.nav-link-button--active {
+  border-bottom: 3px solid var(--brand);
+}
+
+/* Ensure triggers sit nicely in the horizontal list */
+.links > .nav-item > .nav-link-button {
+  padding: 0;
+}
+
+/* Dropdown arrow */
+.nav-link-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-arrow {
+  font-size: 0.7rem;
+}
+
+/* Parent of dropdown */
+.nav-item {
+  position: relative;
+}
+
+/* Dropdown menu panel */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 170px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 8px 0;
+  list-style: none;
+  margin: 0;
+  display: none;
+  z-index: 20;
+}
+
+/* Show on hover */
+.nav-item--dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Dropdown links */
+.dropdown-link {
+  display: block;
+  padding: 8px 14px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.dropdown-link:hover,
+.dropdown-link.active {
+  background: #f5f5f5;
+  color: var(--brand);
+}
+
+/* Small screen tweaks */
+@media (max-width: 768px) {
+  .dropdown-menu {
+    min-width: 150px;
+  }
+}
+
 .btn {
   background: var(--brand);
   color: #fff;
@@ -62,6 +170,20 @@ body {
   padding: 8px 14px;
   border-radius: 10px;
 }
+.btn-link {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.btn-link:hover {
+  background: #f5f5f5;
+}
+
 .page h1 {
   margin-bottom: 8px;
 }
@@ -105,10 +227,19 @@ body {
   display: grid;
   gap: 12px;
 }
+.form h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
 .form label {
   display: grid;
   gap: 6px;
   font-size: 14px;
+}
+.form label span.required {
+  color: #c53030;
 }
 .form input,
 .form textarea {
@@ -116,6 +247,13 @@ body {
   border: 1px solid #ddd;
   border-radius: 10px;
 }
+.form input:disabled,
+.form textarea:disabled {
+  background: #f5f5f5;
+  color: #777;
+  cursor: not-allowed;
+}
+
 .form .two-col {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -125,6 +263,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: flex-start; /* make sure text stays close to checkbox */
 }
 
 /* ===== MODAL (improved layout) ===== */
@@ -272,42 +411,185 @@ body {
 /* === HERO (main page part 1) === */
 .hero {
   position: relative;
-  min-height: 60vh;
-  background-image: url("https://images.pexels.com/photos/3299901/pexels-photo-3299901.jpeg");
-  background-size: cover;
-  background-position: center;
   color: #fff;
+
+  /* full-bleed width */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  overflow: hidden;
+  margin-top: -2px;
+  /* height minus navbar */
+  min-height: calc(100vh - var(--nav-h));
+
+  /* image */
+  background-size: cover; /* fill sideways and crop height */
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
 }
 
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.7));
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.25)
+  );
+  pointer-events: none;
+}
+
+/* .hero-overlay {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+} */
+.hero-overlay {
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+
+  /* push copy to the bottom-left */
+  padding: 0 24px 80px; /* bottom = distance from bottom edge */
+  display: flex;
+  align-items: flex-end; /* vertical: bottom */
+  justify-content: flex-start; /* horizontal: left */
+}
+
+.hero-copy {
+  max-width: 500px;
+}
+
+.hero-copy h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.hero-copy p {
+  font-size: 18px;
+  opacity: 0.95;
+}
+/* container for the dots */
+/* .hero-dots {
+  display: flex;
+  gap: 8px;
+} */
+
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 24px; /* distance from bottom edge */
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+/* individual dots – visually like your screenshot */
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+/* active / blue dot */
+.hero-dot--active {
+  background: var(--brand); /* nice blue, tweak if you want */
+  transform: scale(1.1);
+}
+
+/* optional: tiny hover hint on non-active dots */
+.hero-dot:not(.hero-dot--active):hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero {
+    min-height: calc(60vh - var(--nav-h));
+  }
+  .hero-copy h1 {
+    font-size: 32px;
+  }
+  .hero-copy p {
+    font-size: 14px;
+  }
+  .hero-dots {
+    bottom: 20px;
+    left: 16px;
+  }
+  .hero-overlay {
+    padding: 0 16px 60px;
+  }
+}
+/* .hero {
+  color: #fff;
+  height: calc(100vh - 64px);
+  height: calc(100vh - var(--nav-h));
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - var(--nav-h));
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.25)
+  );
 }
 
 .hero-overlay {
   position: relative;
+  width: 100%;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 48px 24px 32px;
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.hero-copy {
+  max-width: 500px;
 }
 
 .hero-copy h1 {
-  font-size: 40px;
-  margin-bottom: 8px;
+  font-size: 48px;
+  margin-bottom: 10px;
 }
 
 .hero-copy p {
-  max-width: 520px;
-  font-size: 16px;
+  font-size: 18px;
+  opacity: 0.95;
 }
 
-.hero-bottom-row {
+@media (max-width: 768px) {
+  .hero {
+    height: 40vh;
+    min-height: 250px;
+  }
+  .hero-copy h1 {
+    font-size: 32px;
+  }
+  .hero-copy p {
+    font-size: 14px;
+  }
+} */
+
+/* .hero-bottom-row {
   margin-top: 32px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -332,6 +614,54 @@ body {
 .hero-box-actions {
   display: flex;
   gap: 8px;
+} */
+
+.cta-section {
+  padding: 32px 0 24px;
+}
+
+/* Row holding the two boxes */
+.hero-bottom-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* Individual boxes */
+.hero-box {
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  padding: 18px 20px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.hero-box h2 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+
+.hero-box p {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.hero-box-actions {
+  display: flex;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .cta-section {
+    padding-top: 24px;
+  }
+}
+/* Little personality difference between the two */
+.hero-box--membership {
+  background: #ffffff;
+}
+
+.hero-box--adopt {
+  background: #f5faf7;
 }
 
 /* === MAIN PAGE PART 2 – cards and adoption strip === */
@@ -345,64 +675,82 @@ body {
 .home-card {
   background: #fff;
   border-radius: 16px;
-  border: 1px solid #eee;
-  padding: 16px 18px;
+  border: 1px solid #e5e7eb;
+  padding: 24px 22px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .home-card h3 {
   margin-top: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1rem;
+}
+
+.home-card p {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
 }
 
 .home-card-link {
   display: inline-block;
-  margin-top: 8px;
-  font-size: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-decoration: none;
   color: var(--brand);
 }
 
-/* adoption preview row */
-.adoption-preview {
-  margin: 40px auto 48px;
+.home-card-link:hover {
+  text-decoration: underline;
 }
 
-.adoption-preview__header {
+.home-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
+  border-color: transparent;
+}
+
+/* HOME – adoption preview section */
+.adoption-section {
+  margin: 40px auto 60px;
+}
+
+.adoption-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
   margin-bottom: 16px;
 }
 
-.adoption-preview__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 16px;
-}
-
-.adoption-preview__card {
-  border-radius: 16px;
-  border: 1px solid #eee;
-  overflow: hidden;
-  background: #fff;
-}
-
-.adoption-preview__card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.adoption-preview__card-body {
-  padding: 10px 12px;
-}
-
-.adoption-preview__more {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  border: 1px dashed #ccc;
-  text-decoration: none;
+.adoption-section-link {
+  font-size: 0.9rem;
   font-weight: 600;
-  color: var(--ink);
-  background: #fafafa;
+  text-decoration: none;
+  color: var(--brand);
+}
+
+.adoption-section-link:hover {
+  text-decoration: underline;
+}
+
+/* Use Adopt card styling but slightly smaller for home */
+.adopt-grid--home .adopt-card--home {
+  height: 260px;
+}
+
+.adopt-grid--home .adopt-card--home img {
+  height: 260px;
+}
+
+/* On small screens, reduce height a bit */
+@media (max-width: 768px) {
+  .adopt-grid--home .adopt-card--home,
+  .adopt-grid--home .adopt-card--home img {
+    height: 220px;
+  }
 }
 
 /* === ADOPTION PAGE/GALLERY PAGE === */
@@ -438,7 +786,7 @@ body {
   display: block;
 }
 
-.adopt-card__details {
+.adopt-overlay {
   position: absolute;
   left: 0;
   right: 0;
@@ -453,25 +801,25 @@ body {
   min-height: 40%;
 }
 
-.adopt-card:hover .adopt-card__details {
+.adopt-card:hover .adopt-overlay {
   transform: translateY(0);
   opacity: 1;
 }
 
-/* first card: show details from the start like your sketch */
-.adopt-card--featured .adopt-card__details {
+.adopt-card:hover {
+  transition: tra;
+}
+/* .adopt-card--featured .adopt-overlay {
   position: static;
   transform: none;
   opacity: 1;
   background: #fff;
   color: var(--ink);
+} */
+.field-error {
+  color: #c53030;
+  font-size: 0.8rem;
 }
-
-/* remove default button styling */
-.adopt-card {
-  border: none;
-}
-
 .status-row {
   margin-top: 8px;
 }
@@ -565,7 +913,9 @@ body {
 .auth-panel .form {
   max-width: 100%;
 }
-
+.form button.btn {
+  margin-top: 8px;
+}
 /* responsive tweaks */
 @media (max-width: 768px) {
   .hero-overlay {
@@ -588,4 +938,74 @@ body {
   border-radius: 10px;
   border: 1px solid #ddd;
   font: inherit;
+}
+
+/* === ADOPT APPLY PAGE LAYOUT === */
+
+.adopt-apply-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.adopt-apply-right .form {
+  max-width: 700px;
+}
+/* Checkbox layout only for the PetForm on adopt apply page */
+.adopt-apply-right .pet-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.adopt-apply-right .pet-checkbox input {
+  margin-top: 5px; /* nudges the box down so it aligns with the first line of text */
+}
+
+.adopt-apply-right .pet-checkbox span {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* LEFT SIDE */
+.adopt-apply-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.adopt-apply-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.adopt-apply-info {
+  padding: 14px 16px;
+}
+
+.adopt-apply-info h2 {
+  margin: 0 0 6px;
+  font-size: 1.3rem;
+}
+
+.adopt-apply-info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .adopt-apply-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .adopt-apply-img {
+    height: 200px;
+  }
 }
