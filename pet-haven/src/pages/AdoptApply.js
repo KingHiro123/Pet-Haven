@@ -6,7 +6,7 @@ import PetForm from "../components/PetForm";
 
 export default function AdoptApply() {
   const { id } = useParams();
-  const pet = pets.find((p) => p.id === id);
+  const pet = pets.find((p) => String(p.id) === String(id));
 
   const actionWord = pet?.status?.toLowerCase().includes("foster")
     ? "foster"
