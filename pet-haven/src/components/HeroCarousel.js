@@ -33,8 +33,18 @@ export default function HeroCarousel() {
   return (
     <section
       className="hero"
-      style={{ backgroundImage: `url(${current.image})` }}
+      // style={{ backgroundImage: `url(${current.image})` }}
     >
+      <div className="hero-images">
+        {slides.map((slide, i) => (
+          <img
+            key={slide.id}
+            src={slide.image}
+            alt=""
+            className={`hero-image ${i === index ? "hero-image--active" : ""}`}
+          />
+        ))}
+      </div>
       <div className="hero-overlay">
         <div className="hero-copy">
           <h1>{current.heading}</h1>

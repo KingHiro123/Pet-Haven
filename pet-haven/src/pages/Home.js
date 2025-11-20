@@ -3,6 +3,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { pets } from "../data/pets"; // if you're still using pets.json, swap this back
 import HeroCarousel from "../components/HeroCarousel";
+import Donate from "../components/donate";
+
 export default function Home() {
   const featuredPets = pets.slice(0, 3);
 
@@ -147,6 +149,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* DONATE SECTION */}
+      <Donate />
     </>
   );
 }

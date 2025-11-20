@@ -108,11 +108,7 @@ export default function Navbar() {
                   Volunteer
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/donate" className="dropdown-link">
-                  Donate
-                </NavLink>
-              </li>
+
               <li>
                 <NavLink to="/membership" className="dropdown-link">
                   Membership
@@ -124,7 +120,10 @@ export default function Navbar() {
 
         {/* Right side – login */}
         <div className="auth">
-          <NavLink to="/auth">Login</NavLink>
+          <NavLink to="/login">Login</NavLink>
+          <NavLink to="/register" className="btn-secondary">
+            Register
+          </NavLink>
         </div>
       </div>
     </nav>
