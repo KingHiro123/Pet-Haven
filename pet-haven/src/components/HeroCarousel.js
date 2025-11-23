@@ -1,5 +1,6 @@
 // src/components/HeroCarousel.js
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 const base = process.env.PUBLIC_URL || "";
 const slides = [
   {
@@ -49,6 +50,11 @@ export default function HeroCarousel() {
         <div className="hero-copy">
           <h1>{current.heading}</h1>
           <p>{current.text}</p>
+          <div className="hero-cta">
+            <Link to="/adopt" className="btn">
+              View pets for adoption
+            </Link>
+          </div>
         </div>
 
         {/* dot indicators only */}

@@ -1,29 +1,51 @@
-// src/pages/Membership.js
-import React, { useState } from "react";
+// src/pages/MembershipProfile.js  (OPTION B – PROFILE-INTEGRATED)
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Alert from "../components/Alert";
 
-export default function Membership() {
-  const [sent, setSent] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [tier, setTier] = useState("Friend");
-  const [note, setNote] = useState("");
+export default function MembershipProfile() {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [selectedTier, setSelectedTier] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const subject = encodeURIComponent("Pet Haven Membership Enquiry");
-    const body = encodeURIComponent(
-      `Name: ${name}
-Email: ${email}
-Selected tier: ${tier}
+  const navigate = useNavigate();
 
-Message:
-${note}`
-    );
+  // Load login + membership info on mount
+  useEffect(() => {
+    const username = localStorage.getItem("pethavenLoggedInUser");
+    if (username) setLoggedInUser(username);
 
-    window.location.href =
-      "mailto:admin@pethaven.org?subject=" + subject + "&body=" + body;
-    setSent(true);
+    const rawUser = localStorage.getItem("pethavenUser");
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser);
+        if (user.membershipTier) setSelectedTier(user.membershipTier);
+      } catch {
+        // ignore parse error
+      }
+    }
+  }, []);
+
+  function handleSelectTier(tierName) {
+    setSelectedTier(tierName);
+
+    // Update user profile in localStorage
+    const rawUser = localStorage.getItem("pethavenUser");
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser);
+        user.membershipTier = tierName;
+        localStorage.setItem("pethavenUser", JSON.stringify(user));
+      } catch {
+        // ignore if something weird
+      }
+    }
+
+    // Optional extra key, same as Option A:
+    localStorage.setItem("pethavenMembershipTier", tierName);
+
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 4000);
   }
 
   return (
@@ -38,6 +60,83 @@ ${note}`
             updates and the satisfaction of knowing you’re part of the pack.
           </p>
         </header>
+
+        {/* CTA / SELECT PANEL */}
+        <section className="membership-form-wrapper">
+          {loggedInUser ? (
+            <>
+              {showAlert && (
+                <Alert
+                  type="success"
+                  text={`Thanks, ${loggedInUser}! Your account is now tagged as a ${selectedTier} member.`}
+                />
+              )}
+
+              <h2 className="membership-form-title">Choose your membership</h2>
+              <p className="muted membership-form-subtitle">
+                Your selected tier will be saved with your Pet Haven account on
+                this browser.
+              </p>
+
+              <div className="membership-choice-buttons">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => handleSelectTier("Friend")}
+                >
+                  Choose Friend
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => handleSelectTier("Guardian")}
+                >
+                  Choose Guardian
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => handleSelectTier("Champion")}
+                >
+                  Choose Champion
+                </button>
+              </div>
+
+              {selectedTier && (
+                <p
+                  className="muted"
+                  style={{ marginTop: 10, fontSize: "0.85rem" }}
+                >
+                  Current tier on your account: <strong>{selectedTier}</strong>
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <h2 className="membership-form-title">Want to join?</h2>
+              <p className="muted membership-form-subtitle">
+                Log in or create an account to select a membership tier.
+              </p>
+
+              <div className="membership-choice-buttons">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => navigate("/login")}
+                >
+                  Log in
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => navigate("/register")}
+                >
+                  Create account
+                </button>
+              </div>
+            </>
+          )}
+        </section>
 
         {/* TIERS */}
         <section className="membership-tiers">
@@ -71,161 +170,7 @@ ${note}`
             </ul>
           </article>
         </section>
-
-        {/* FORM */}
-        <section className="membership-form-wrapper">
-          <form className="form membership-form" onSubmit={handleSubmit}>
-            {sent && (
-              <Alert
-                type="success"
-                text="Thank you! An email window has been opened so you can confirm your membership."
-              />
-            )}
-
-            <h2 className="membership-form-title">Register your interest</h2>
-            <p className="muted membership-form-subtitle">
-              We’ll follow up with payment options and a welcome note. No auto
-              deductions—everything is handled manually for this assignment.
-            </p>
-
-            <label>
-              Name
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Your full name"
-                required
-              />
-            </label>
-
-            <label>
-              Email
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-              />
-            </label>
-
-            <label>
-              Membership tier
-              <select value={tier} onChange={(e) => setTier(e.target.value)}>
-                <option value="Friend">Friend – from $10 / month</option>
-                <option value="Guardian">Guardian – from $30 / month</option>
-                <option value="Champion">Champion – from $80 / month</option>
-              </select>
-            </label>
-
-            <label>
-              Message
-              <textarea
-                rows="4"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder="Questions, special arrangements, workplace giving, etc."
-              />
-            </label>
-
-            <button className="btn" type="submit">
-              Open email draft
-            </button>
-          </form>
-        </section>
       </div>
     </section>
   );
 }
-
-// import React from "react";
-
-// export default function Membership() {
-//   return (
-//     <section className="page">
-//       <div className="container">
-//         <header className="adopt-header">
-//           <h1>Pet Haven Membership</h1>
-//           <p className="muted">
-//             Memberships provide steady support so we can plan food, medical
-//             care, and shelter upgrades for our animals. Choose a tier that fits
-//             you and we’ll keep you updated on the lives you’re helping.
-//           </p>
-//         </header>
-
-//         {/* Membership tiers */}
-//         <div className="home-cards-row" style={{ marginBottom: "32px" }}>
-//           <article className="home-card">
-//             <h3>Friend of Pet Haven</h3>
-//             <p className="muted">
-//               Perfect for first-time supporters.
-//               <br />
-//               <strong>$10/month</strong>
-//             </p>
-//             <ul className="muted" style={{ paddingLeft: "18px" }}>
-//               <li>Quarterly email updates</li>
-//               <li>Invitation to open-house events</li>
-//             </ul>
-//           </article>
-
-//           <article className="home-card">
-//             <h3>Guardian</h3>
-//             <p className="muted">
-//               Help cover food and basic medical care.
-//               <br />
-//               <strong>$25/month</strong>
-//             </p>
-//             <ul className="muted" style={{ paddingLeft: "18px" }}>
-//               <li>Everything in Friend tier</li>
-//               <li>Feature stories on animals you’ve helped</li>
-//               <li>Priority invites for adoption events</li>
-//             </ul>
-//           </article>
-
-//           <article className="home-card">
-//             <h3>Haven Circle</h3>
-//             <p className="muted">
-//               For long-term champions of animal welfare.
-//               <br />
-//               <strong>$50/month &amp; above</strong>
-//             </p>
-//             <ul className="muted" style={{ paddingLeft: "18px" }}>
-//               <li>Everything in Guardian tier</li>
-//               <li>Behind-the-scenes tours (by appointment)</li>
-//               <li>Recognition (with your consent) on our supporter wall</li>
-//             </ul>
-//           </article>
-//         </div>
-
-//         {/* Membership sign-up – basic mailto CTA */}
-//         <div className="home-card">
-//           <h3>Become a member</h3>
-//           <p className="muted">
-//             To register as a member, drop us an email with your preferred tier
-//             and contact details. Our team will follow up with payment options
-//             and next steps.
-//           </p>
-//           <a
-//             href={`mailto:admin@pethaven.org?subject=${encodeURIComponent(
-//               "Membership enquiry"
-//             )}&body=${encodeURIComponent(
-//               `Hi Pet Haven team,
-
-// I’m interested in becoming a member. Here are my details:
-
-// Name:
-// Preferred membership tier (Friend / Guardian / Haven Circle):
-// Preferred contact email:
-// Preferred contact number:
-
-// Thank you!`
-//             )}`}
-//             className="btn"
-//           >
-//             Email us about membership
-//           </a>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }

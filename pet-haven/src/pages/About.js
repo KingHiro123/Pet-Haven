@@ -48,23 +48,28 @@ export default function About() {
               medically complex cases.
             </p>
           </div>
-
           <div className="about-card-grid">
-            <div className="home-card">
+            <h2>What we do</h2>
+            <div className="home-card about-icon-card">
+              <div className="about-icon">🐾</div>
               <h3>Rescue</h3>
               <p>
                 We respond to welfare cases and partner with rescuers to bring
                 animals into safe, temporary care.
               </p>
             </div>
-            <div className="home-card">
+
+            <div className="home-card about-icon-card">
+              <div className="about-icon">❤️‍🩹</div>
               <h3>Rehabilitation</h3>
               <p>
                 From basic vet care to behaviour work, we help animals heal
                 physically and emotionally before adoption.
               </p>
             </div>
-            <div className="home-card">
+
+            <div className="home-card about-icon-card">
+              <div className="about-icon">🏡</div>
               <h3>Rehome</h3>
               <p>
                 Our adoption team carefully matches families based on lifestyle,

@@ -13,6 +13,18 @@ export default function PetFilters({
   showStatus = true,
   showBreed = true,
 }) {
+  function handleReset() {
+    setSpeciesFilter("all");
+    setAgeFilter("all");
+
+    // only reset if these filters are being shown
+    if (showStatus && setStatusFilter) {
+      setStatusFilter("all");
+    }
+    if (showBreed && setBreedFilter) {
+      setBreedFilter("all");
+    }
+  }
   return (
     <div className="filter-controls">
       {/* Species */}
@@ -90,6 +102,11 @@ export default function PetFilters({
           </select>
         </label>
       )}
+
+      {/* Reset button */}
+      <button type="button" className="filter-reset" onClick={handleReset}>
+        Reset filters
+      </button>
     </div>
   );
 }
