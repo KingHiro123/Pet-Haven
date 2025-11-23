@@ -55,7 +55,7 @@ export default function Navbar() {
       <div className="nav-inner">
         {/* Brand */}
         <Link to="/" className="brand">
-          Pet Haven
+          Pet Heaven
         </Link>
 
         {/* Main links (desktop only – hidden in CSS on small screens) */}

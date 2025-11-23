@@ -44,7 +44,7 @@ export default function Volunteer() {
           <span className="section-pill">Help on the ground</span>
           <h1>Volunteer with us</h1>
           <p className="muted">
-            Volunteers are the heart of Pet Haven—from cleaning kennels and
+            Volunteers are the heart of Pet Heaven—from cleaning kennels and
             socialising animals to helping at events and behind the scenes. No
             cape needed, just patience and a love for animals.
           </p>

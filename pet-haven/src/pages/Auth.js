@@ -33,16 +33,20 @@ export default function Auth() {
   }, [location.pathname]);
 
   // Called by AuthForm on successful login/register
+  // src/pages/Auth.js
   function handleAuthSuccess(username, mode) {
     setLoggedInUser(username);
     setSuccessMode(mode);
     setShowSuccess(true);
 
-    // after 5 seconds, close popup and go home
+    // Decide where to go next
+    const targetPath = mode === "register" ? "/login" : "/";
+
+    // after 3 seconds, close popup and navigate
     setTimeout(() => {
       setShowSuccess(false);
-      navigate("/");
-    }, 5000);
+      navigate(targetPath); // basename="/Pet-Haven" will handle prefixing
+    }, 3000);
   }
 
   function handleClosePopup() {
@@ -131,63 +135,68 @@ export default function Auth() {
       {/* SUCCESS POPUP (modal) */}
       {showSuccess && (
         <Alert asModal onClose={handleClosePopup}>
-          <h1
-            className="auth-heading"
-            style={{ marginTop: 0, marginBottom: 8 }}
-          >
-            Account
-          </h1>
+          {successMode === "register" ? (
+            <>
+              <h1
+                className="auth-heading"
+                style={{ marginTop: 0, marginBottom: 8 }}
+              >
+                Account created
+              </h1>
 
-          <p className="muted">
-            Welcome back <strong>{loggedInUser}</strong>.
-          </p>
+              <p className="muted">
+                Your account has been created successfully.
+              </p>
+              <p className="muted" style={{ marginTop: 4 }}>
+                Please log in to continue using your account.
+              </p>
+              <p
+                className="muted"
+                style={{ marginTop: 10, fontSize: "0.8rem" }}
+              >
+                Redirecting you to the login page in a few seconds…
+              </p>
+            </>
+          ) : (
+            <>
+              <h1
+                className="auth-heading"
+                style={{ marginTop: 0, marginBottom: 8 }}
+              >
+                Account
+              </h1>
 
-          <p className="muted" style={{ marginTop: 4 }}>
-            You can now make adoption enquiries, volunteer and manage your
-            membership using this account.
-          </p>
+              <p className="muted">
+                Welcome back <strong>{loggedInUser}</strong>.
+              </p>
 
-          <div
-            style={{
-              marginTop: 20,
-              background: "#e6f4ea",
-              padding: "10px 12px",
-              borderRadius: 10,
-              fontSize: "0.9rem",
-            }}
-          >
-            {successMode === "login"
-              ? "Login successful!"
-              : "Registration successful!"}
-          </div>
+              <p className="muted" style={{ marginTop: 4 }}>
+                You can now make adoption enquiries, volunteer and manage your
+                membership using this account.
+              </p>
 
-          <p
-            className="muted"
-            style={{ marginTop: 6, fontSize: "0.8rem", textAlign: "left" }}
-          >
-            Redirecting you to the home page in a few seconds…
-          </p>
+              <div
+                style={{
+                  marginTop: 20,
+                  background: "#e6f4ea",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  fontSize: "0.9rem",
+                }}
+              >
+                Login successful!
+              </div>
+
+              <p
+                className="muted"
+                style={{ marginTop: 6, fontSize: "0.8rem", textAlign: "left" }}
+              >
+                Redirecting you to the home page in a few seconds…
+              </p>
+            </>
+          )}
         </Alert>
       )}
     </section>
   );
 }
-
-// import React from "react";
-// import AuthForm from "../components/AuthForm";
-
-// export default function Auth() {
-//   return (
-//     <section className="page auth-page">
-//       <div className="auth-panel">
-//         {/* <h1 className="auth-title">Login</h1> */}
-//         <AuthForm mode="login" />
-//       </div>
-
-//       <div className="auth-panel">
-//         {/* <h1 className="auth-title">Register</h1> */}
-//         <AuthForm mode="register" />
-//       </div>
-//     </section>
-//   );
-// }

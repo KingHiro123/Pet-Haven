@@ -130,7 +130,7 @@ export default function DonateSection() {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your full name"
+                  placeholder="Your name"
                   required
                 />
               </label>

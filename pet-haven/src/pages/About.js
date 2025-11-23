@@ -8,9 +8,9 @@ export default function About() {
         {/* HEADER */}
         <header className="page-header">
           <span className="section-pill">Our story</span>
-          <h1>About Pet Haven</h1>
+          <h1>About Pet Heaven</h1>
           <p className="muted">
-            Pet Haven is a volunteer-driven charity that rescues, rehabilitates
+            Pet Heaven is a volunteer-driven charity that rescues, rehabilitates
             and rehomes abandoned cats and dogs. We work with fosterers, vets
             and the community to give every animal a fair second chance.
           </p>
