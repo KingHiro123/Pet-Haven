@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HeroCarousel from "../components/HeroCarousel";
-import Donate from "../components/Donate";
+import Donate from "../components/donate";
 import { getNameById } from "../components/PetDataGenerator";
 
 export default function Home() {
